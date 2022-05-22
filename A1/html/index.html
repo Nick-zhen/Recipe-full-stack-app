@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>Kaining's Web</title>
+        <!-- load css file -->
+        <link rel="stylesheet" href="../style/home.css"> 
+        <!-- load js file -->
+        <script type="text/javascript" src="../script/logic.js" defer>        </script>
+    </head>
+<body>
+    <div class="container-div">
+    <nav>
+        <a href="index.html">Home</a>&nbsp;
+        <a href=""> About</a>&nbsp;
+        <a href="">Contact</a>&nbsp;
+    </nav>
+
+    <h3>Add Recipe</h3>
+    <form id="inputForm">
+        <label for="rTitle">Title:</label><br>
+        <textarea id="rTitle" name="rTitle" rows="2"></textarea><br>
+        <label for="ingredients">Ingredients:</label><br>
+        <textarea id="ingredients" name="ingredients" rows="4"></textarea><br>
+        <label for="instructions">Instructions:</label><br>
+        <textarea id="instructions" name="instructions" rows="5"></textarea>
+        <br>
+        <input type="button" class="button button_stuff" onclick="addRecipe()" value="Add"></button>
+        <input type="reset" class="button button_stuff" value="Clear"></button>
+    </form>
+    
+    <br>
+    <button type="submit" class="button delA" onclick="deleteAll()">Delete All</button>
+    <h3>Recipe Lists</h3>
+    <div id="showRecipe-div">
+    <ul id="rLists">
+        <!-- <li>sushi: meat, rice, egg. Steps: 1.take rice 2.stack the meat</li>
+        <li>hotpot: meat, fish, veg. Steps: 1.take rice 2.stack the meat</li> -->
+    </ul> 
+    </div>
+    </div>
+</body>
+</html>
