@@ -4,7 +4,7 @@ body {
   background-image: url(background.jpeg);
   background-attachment: fixed;
   background-repeat: no-repeat;
-  background-size: 1500px;
+  background-size: cover;
 }
 
 .navegation {
@@ -53,6 +53,8 @@ textarea {
   margin-right: auto;
   width: 500px;
   background-color: rgba(154, 202, 233, 0.661);
+  /* border-radius: 30px; */
+  position: relative;
 }
 
 
