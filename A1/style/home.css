@@ -94,6 +94,10 @@ textarea {
   background-color: #9c1804;
   color: white;
 }
+
+.delOneButton {
+  float: right;
+}
 /* .mainbar ul {
     list-style-type: none;
     margin: 0;
