@@ -3,6 +3,8 @@
 HTML CSS Javascript
 ## Assignemnt 2
 react and redux. <br>
+<img width="707" alt="image" src="https://user-images.githubusercontent.com/62523802/171064730-98a87113-7c70-4a61-a219-7feed848b7ed.png">
+
 [workshop2 slides](https://docs.google.com/presentation/d/1vabQ--b47LfViCE_M421qFXsqz3qUL9K3wJ43gI8XvM/edit#slide=id.p) <br><br>
 Resource:
 - [ ] [List and Keys](https://reactjs.org/docs/lists-and-keys.html)<br>
