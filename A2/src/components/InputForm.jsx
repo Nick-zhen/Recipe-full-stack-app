@@ -1,9 +1,15 @@
 import InputText from "./InputText";
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { add } from "../actions/index.js";
 export default function InputForm() {
+
     const [title, setTitle] = useState("");
     const [ingredient, setIngredient] = useState("");
     const [instruction, setInstruction] = useState("");
+    
+    // dispatch actions 
+    const dispatch = useDispatch();
 
     const clearText = () => {
         setTitle("");
@@ -11,19 +17,25 @@ export default function InputForm() {
         setInstruction("");
     }
 
-    const handlesubmit = (event) => {
+    function addRecipe() {
         // console.log(title);
         if (title === "" || ingredient === "" || instruction === "") {
             alert("plz input TEXT!");
         } else {
+            dispatch(add({
+                name: title,
+                ingredients: ingredient,
+                steps: instruction
+            }));
             alert("The recipe was submitted");
+            clearText();
         }
     }
 
     return (
         <div>
             <h3>Add Recipe</h3>
-            <form onSubmit={handlesubmit}>
+            <form>
                 <InputText 
                     value = {title}
                     name="Title" 
@@ -49,7 +61,7 @@ export default function InputForm() {
                     }} 
                 /><br/><br/>
             </form>
-            <button className="button button_stuff" onClick={handlesubmit}>Add</button>
+            <button className="button button_stuff" onClick={addRecipe}>Add</button>
             <button className="button button_stuff" onClick={clearText}>Clear</button>
         </div>
     );
