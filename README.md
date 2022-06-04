@@ -14,3 +14,4 @@ Resource:
 - [X] [add/delete counter example](https://levelup.gitconnected.com/react-redux-hooks-useselector-and-usedispatch-f7d8c7f75cdd)<br>
 - [ ] [another example](https://scriptverse.academy/tutorials/reactjs-useselector-usedispatch.html)<br>
 - [X] [Start the assignment!](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app)<br>
+- [ ] [react add lists](https://www.robinwieruch.de/react-add-item-to-list/)<br>
