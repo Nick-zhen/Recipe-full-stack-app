@@ -13,6 +13,9 @@ export default function RecipeLists(props) {
                 <ul id="rLists">
                     {recipeLists.map((recipe) => (
                         // add unique key at most upper level
+                        // Keys only make sense in the context of the surrounding array.
+                        // extract a Recipe comonent, I should add key on the <Recipe /> elements in the array
+                        // rather than on the <li> element in the Recipe itself.
                         <Recipe recipe={recipe} key={recipe.id}/>
                     ))}
                 </ul> 

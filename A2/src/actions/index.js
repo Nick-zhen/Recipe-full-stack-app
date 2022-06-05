@@ -5,9 +5,9 @@ export const add = recipe => {
     };
 };
 
-export const dele = recipe => {
+export const dele = id => {
     return {
         type: 'DELETE_RECIPE',
-        payload: recipe
+        payload: id
     }
 }
