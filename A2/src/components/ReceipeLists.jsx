@@ -1,20 +1,19 @@
 import { useSelector } from "react-redux";
+import Recipe from "./Recipe";
 
 export default function RecipeLists(props) {
     // useSelector allows you to access the data in the Redux store
     const recipeLists = useSelector((state) => state.buttonOperation);
-    console.log(recipeLists);
+    
+
+    // console.log(recipeLists);
     return (
         <div>
             <div id="showRecipe-div">
                 <ul id="rLists">
                     {recipeLists.map((recipe) => (
-                        <li key={recipe.name}>
-                            name: {recipe.name}<br/>
-                            <input type="button" className="delOneButton" value="X"/>
-                            ingredients: {recipe.ingredients}<br/>
-                            steps: {recipe.steps}<br/>
-                        </li>
+                        // add unique key at most upper level
+                        <Recipe recipe={recipe} key={recipe.id}/>
                     ))}
                 </ul> 
             </div>

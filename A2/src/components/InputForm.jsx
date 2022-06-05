@@ -2,6 +2,7 @@ import InputText from "./InputText";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { add } from "../actions/index.js";
+import { v4 as uuidv4 } from 'uuid';
 export default function InputForm() {
 
     const [title, setTitle] = useState("");
@@ -25,7 +26,8 @@ export default function InputForm() {
             dispatch(add({
                 name: title,
                 ingredients: ingredient,
-                steps: instruction
+                steps: instruction,
+                id: uuidv4()
             }));
             alert("The recipe was submitted");
             clearText();
