@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { add } from "../actions/index.js";
 import { v4 as uuidv4 } from 'uuid';
+
 export default function InputForm() {
 
     const [title, setTitle] = useState("");
@@ -19,7 +20,6 @@ export default function InputForm() {
     }
 
     function addRecipe() {
-        // console.log(title);
         if (title === "" || ingredient === "" || instruction === "") {
             alert("plz input TEXT!");
         } else {

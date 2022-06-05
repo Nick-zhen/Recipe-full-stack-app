@@ -5,7 +5,7 @@ const buttonOperation = (recipes = initialRecipe, action) => {
         case 'ADD_RECIPE':
             return recipes.concat(action.payload);
         case 'DELETE_RECIPE':
-            return recipes;
+            return recipes.filter((recipe) => recipe.id !== action.payload);
         default:
             return recipes;
     }
