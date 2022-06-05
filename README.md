@@ -16,3 +16,5 @@ Resource:
 - [X] [Start the assignment!](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app)<br>
 - [X] [react add lists](https://www.robinwieruch.de/react-add-item-to-list/)<br>
 - [X] [redux awesome tutorial!](https://www.youtube.com/watch?v=k68j9xlbHHk)<br>
+- [X] [Pop up awesome tutorial](https://www.youtube.com/watch?v=i8fAO_zyFAM)<br>
+- [ ] [To do list for advanced project](https://www.youtube.com/watch?v=TZ933D_RB8E)
