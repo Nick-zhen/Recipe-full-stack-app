@@ -98,7 +98,6 @@ textarea {
 }
 
 .detail-btn {
-  position: absolute;
-  right: 30px;
-  /* top: 160px; */
+  position: static;
+  float: right;
 }
