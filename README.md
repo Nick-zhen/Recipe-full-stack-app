@@ -1,6 +1,7 @@
 # CPSC455
 ## Assignment 1
 HTML CSS Javascript
+
 ## Assignemnt 2
 react and redux. <br>
 <img width="707" alt="image" src="https://user-images.githubusercontent.com/62523802/171064730-98a87113-7c70-4a61-a219-7feed848b7ed.png">
@@ -18,3 +19,8 @@ Resource:
 - [X] [redux awesome tutorial!](https://www.youtube.com/watch?v=k68j9xlbHHk)<br>
 - [X] [Pop up awesome tutorial](https://www.youtube.com/watch?v=i8fAO_zyFAM)<br>
 - [ ] [To do list for advanced project](https://www.youtube.com/watch?v=TZ933D_RB8E)
+
+## Assignemnt 3
+node.js <br>
+- [ ] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
+- [ ] []()
