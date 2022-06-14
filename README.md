@@ -26,3 +26,4 @@ node.js <br>
 - [X] [node.js tutorial](https://www.youtube.com/watch?v=fBNz5xF-Kx4)<br>
 - [ ] [Express and REST tutorial](https://www.youtube.com/watch?v=pKd0Rpw7O48)<br>
 - [ ] [Express tutorial part 2](https://www.youtube.com/watch?v=KyWaXA_NvT0)<br>
+- [ ] [express and js 35 minute](https://www.youtube.com/watch?v=SccSCuHhOw0)<br>
