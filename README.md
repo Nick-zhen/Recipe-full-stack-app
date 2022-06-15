@@ -22,6 +22,8 @@ Resource:
 
 ## Assignemnt 3
 node.js <br>
+![Uploading image.png…]()
+
 - [ ] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
 - [ ] [How to build a REST API with Node js & Express](https://www.youtube.com/watch?v=pKd0Rpw7O48)<br>
 - [X] [node.js tutorial](https://www.youtube.com/watch?v=fBNz5xF-Kx4)<br>
