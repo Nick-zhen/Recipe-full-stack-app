@@ -31,3 +31,4 @@ node.js <br>
 - [ ] [express and js 35 minute](https://www.youtube.com/watch?v=SccSCuHhOw0)<br>
 - [ ] [redux and express](https://medium.com/walmartglobaltech/creating-react-redux-express-full-stack-application-part-i-82959d847802)<br>
 - [ ] [redux, middleware and thunks](https://www.youtube.com/watch?v=qA6oyQQTJ3I)<br>
+- [ ] [redux toolkit(used this in asm)](https://redux-toolkit.js.org/api/createAsyncThunk)<br>
