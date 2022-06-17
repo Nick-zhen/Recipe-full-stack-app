@@ -30,3 +30,4 @@ node.js <br>
 - [ ] [Express tutorial part 2](https://www.youtube.com/watch?v=KyWaXA_NvT0)<br>
 - [ ] [express and js 35 minute](https://www.youtube.com/watch?v=SccSCuHhOw0)<br>
 - [ ] [redux and express](https://medium.com/walmartglobaltech/creating-react-redux-express-full-stack-application-part-i-82959d847802)<br>
+- [ ] [redux, middleware and thunks](https://www.youtube.com/watch?v=qA6oyQQTJ3I)<br>
