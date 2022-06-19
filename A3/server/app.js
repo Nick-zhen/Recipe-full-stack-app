@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-// const cors = require('cors');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -11,7 +11,7 @@ const recipeRouter = require('./routes/recipes');
 const app = express();
 // init middleware
 
-// app.use(cors());
+app.use(cors());
 app.use(logger('dev'));
 // Body Parser Middleware
 app.use(express.json());

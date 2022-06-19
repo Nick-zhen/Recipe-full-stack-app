@@ -26,6 +26,7 @@ router.post('/', function (req, res, next) {
   }
   const user = { id: uuid(), name: req.body.name };
   users.push(user);
+
   return res.send(user);
 });
 
