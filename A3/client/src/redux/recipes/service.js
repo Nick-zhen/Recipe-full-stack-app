@@ -48,7 +48,7 @@ const updateRecipe = async (recipeAndId) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(recipeAndId)  
+        body: JSON.stringify(recipeAndId) 
     });
 
     const data = await response.json();
@@ -61,12 +61,19 @@ const updateRecipe = async (recipeAndId) => {
     return data;
 }
 
+const getIdList = async () => {
+    const response = await fetch('http://localhost:3001/recipes/id/list', {
+        method: 'GET'
+    });
+    return response.json();
+};
+
 const RecipeService = {
     getRecipes,
     addRecipe,
     deleteRecipe,
     updateRecipe,
-
+    getIdList,
 };
 
 export default RecipeService;

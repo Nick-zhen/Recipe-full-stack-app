@@ -17,6 +17,8 @@ const recipeList = [
     }
 ];
 
+const idList = ["0", "1"];
+
 router.get('/', function (req, res, next) {
     return res.send(recipeList);
 });
@@ -40,13 +42,15 @@ router.post('/', function (req, res, next) {
     }
     const recipe = { id: uuid(), name: req.body.name, ingredients: req.body.ingredients, steps: req.body.steps };
     recipeList.push(recipe);
-    console.log(recipe);
+    idList.push(recipe.id);
+    console.log(idList);
+    console.log(req.body);
     return res.send(recipe);
 });
 
 // update recipe
 router.put('/:recipeId', function (req, res, next) {
-    const recipe = recipeList.find((recipe) => recipe.id === req.body.id);
+    const recipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
     if (!recipe) return res.status(404).send({ message: 'Recipe not found for update' });
 
     const updRecipe = req.body;
@@ -63,8 +67,15 @@ router.delete('/:recipeId', function (req, res, next) {
     if (!delRecipe) res.status(404).send("The id is not found to delete");
     const idx = recipeList.indexOf(delRecipe);
     recipeList.splice(idx, 1);
+    const idIdx = idList.indexOf(delRecipe.id);
+    idList.splice(idIdx, 1);
+    console.log(idList);
     console.log(delRecipe);
     return res.send(delRecipe);
+});
+
+router.get('/id/list', function (req, res, next) {
+    return res.send(JSON.stringify(idList));
 });
 
 module.exports = router;

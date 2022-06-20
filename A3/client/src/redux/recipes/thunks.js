@@ -31,3 +31,10 @@ export const updateRecipeAsync = createAsyncThunk(
         return await RecipeService.updateRecipe(recipeAndId);
     }
 )
+
+export const getIdListAsync = createAsyncThunk(
+    actionTypes.GET_IDLIST,
+    async () => {
+        return await RecipeService.getIdList();
+    }
+);
