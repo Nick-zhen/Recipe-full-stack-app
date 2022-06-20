@@ -21,9 +21,47 @@ Resource:
 - [ ] [To do list for advanced project](https://www.youtube.com/watch?v=TZ933D_RB8E)
 
 ## Assignemnt 3
+Im this assignemnt, I used toolkit to implement reducer instead of using tradiationl reducer.
+'''
+import { createSlice } from '@reduxjs/toolkit';
+import { REQUEST_STATE } from "../utils";
+import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync } from './thunks';
+
+const INITIAL_STATE = {
+    recipeList: [],
+    getRecipes: REQUEST_STATE.IDLE,
+    addRecipe: REQUEST_STATE.IDLE,
+    deleteRecipe: REQUEST_STATE.IDLE,
+    updateRecipe: REQUEST_STATE.IDLE,
+    error: null
+};
+
+const recipesSlice = createSlice({
+    name: 'recipes',
+    initialState: INITIAL_STATE,
+    reducer: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(getRecipesAsync.pending, (state) => {
+                state.getRecipes = REQUEST_STATE.PENDING;
+                state.error = null;
+            })
+            .addCase(getRecipesAsync.fulfilled, (state, action) => {
+                state.getRecipes = REQUEST_STATE.FULFILLED;
+                state.recipeList = action.payload;
+            })
+            .addCase(getRecipesAsync.rejected, (state, action) => {
+                state.getRecipes = REQUEST_STATE.REJECTED;
+                state.error = action.error;
+            })
+    }
+});
+
+export default recipesSlice.reducer;
+'''
 node.js <br>
 <img width="813" alt="image" src="https://user-images.githubusercontent.com/62523802/173720216-7b81ae76-9a23-4d4b-b163-1337cf2418ae.png"><br>
-- [ ] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
+- [X] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
 - [ ] [How to build a REST API with Node js & Express](https://www.youtube.com/watch?v=pKd0Rpw7O48)<br>
 - [X] [node.js tutorial](https://www.youtube.com/watch?v=fBNz5xF-Kx4)<br>
 - [X] [Express JS Crash Course](https://www.youtube.com/watch?v=L72fhGm1tfE&t=1s)<br>
