@@ -22,7 +22,7 @@ Resource:
 
 ## Assignemnt 3
 Im this assignemnt, I used toolkit to implement reducer instead of using tradiationl reducer.
-'''
+```js
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
 import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync } from './thunks';
@@ -58,7 +58,7 @@ const recipesSlice = createSlice({
 });
 
 export default recipesSlice.reducer;
-'''
+```
 node.js <br>
 <img width="813" alt="image" src="https://user-images.githubusercontent.com/62523802/173720216-7b81ae76-9a23-4d4b-b163-1337cf2418ae.png"><br>
 - [X] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
