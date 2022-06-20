@@ -21,7 +21,7 @@ Resource:
 - [ ] [To do list for advanced project](https://www.youtube.com/watch?v=TZ933D_RB8E)
 
 ## Assignemnt 3
-Im this assignemnt, I used toolkit to implement reducer instead of using tradiationl reducer.
+Im this assignemnt, I used toolkit to create reducer instead of using tradiationl reducer.
 ```js
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
@@ -59,6 +59,79 @@ const recipesSlice = createSlice({
 
 export default recipesSlice.reducer;
 ```
+And then create thunks to call fetch REST APIs <br>
+```js
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { actionTypes } from "./actionTypes";
+
+export const getRecipesAsync = createAsyncThunk(
+    actionTypes.GET_RECIPES,
+    async () => {
+        return await RecipeService.getRecipes();
+    }
+);
+
+const getRecipes = async () => {
+    const response = await fetch('http://localhost:3001/recipes', {
+        method: 'GET'
+    });
+    // console.log(response.json());
+    return response.json();
+};
+
+const addRecipe = async (recipe) => {
+    console.log(recipe);
+    const response = await fetch('http://localhost:3001/recipes', {
+       method: 'POST',
+       headers: {
+        'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(recipe) 
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (!response.ok) {
+        const errorMsg = data?.message;
+        throw new Error(errorMsg)
+    }
+    
+    return data;
+};
+```
+Once the page was been loaded, I will dispatch the "action" in the react component. <br>
+```js
+useEffect(() => {
+    dispatch(getRecipesAsync());
+}, [dispatch]);
+```
+In the server side, I use "express" and routes. Example:
+```js
+const express = require('express');
+const router = express.Router();
+
+router.get('/', function (req, res, next) {
+    return res.send(recipeList);
+});
+
+// create recipe
+router.post('/', function (req, res, next) {
+    if (!req.body.name) {
+        return res.status(400).send({ message: 'Recipe must have a name!' })
+    } else if (!req.body.ingredients) {
+        return res.status(400).send({ message: 'Recipe must have ingredients!' })
+    } else if (!req.body.steps) {
+        return res.status(400).send({ message: 'Recipe must have steps!' })
+    }
+    const recipe = { id: uuid(), name: req.body.name, ingredients: req.body.ingredients, steps: req.body.steps };
+    recipeList.push(recipe);
+    console.log(recipe);
+    return res.send(recipe);
+});
+```
+<br>
+In summary, 
+<br>
 node.js <br>
 <img width="813" alt="image" src="https://user-images.githubusercontent.com/62523802/173720216-7b81ae76-9a23-4d4b-b163-1337cf2418ae.png"><br>
 - [X] [workshop3 slides](https://docs.google.com/presentation/d/1JHzzo3aqUgRyKt3G_8jHLoAifcG1RUEGoHeVsV6_9co/edit#slide=id.gf427ff1563_0_22)<br>
