@@ -12,7 +12,8 @@ export const getRecipesAsync = createAsyncThunk(
 export const addRecipeAsync = createAsyncThunk(
     actionTypes.ADD_RECIPE,
     async (recipe) => {
-        return await RecipeService.addRecipe({ recipe });
+        console.log(recipe);
+        return await RecipeService.addRecipe(recipe);
     }
 )
 
@@ -20,5 +21,13 @@ export const deleteRecipeAsync = createAsyncThunk(
     actionTypes.DELETE_RECIPE,
     async (recipeId) => {
         return await RecipeService.deleteRecipe(recipeId);
+    }
+)
+
+export const updateRecipeAsync = createAsyncThunk(
+    actionTypes.UPDATE_RECIPE,
+    async (recipeAndId) => {
+        console.log(recipeAndId);
+        return await RecipeService.updateRecipe(recipeAndId);
     }
 )

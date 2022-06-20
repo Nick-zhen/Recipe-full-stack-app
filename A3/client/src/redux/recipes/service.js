@@ -7,6 +7,7 @@ const getRecipes = async () => {
 };
 
 const addRecipe = async (recipe) => {
+    console.log(recipe);
     const response = await fetch('http://localhost:3001/recipes', {
        method: 'POST',
        headers: {
@@ -40,10 +41,31 @@ const deleteRecipe = async (recipeId) => {
     return data;
 };
 
+const updateRecipe = async (recipeAndId) => {
+    console.log(recipeAndId);
+    const response = await fetch('http://localhost:3001/recipes/' + recipeAndId.id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(recipeAndId)  
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (!response.ok) {
+        const errorMsg = data?.message;
+        throw new Error(errorMsg)
+    }
+    
+    return data;
+}
+
 const RecipeService = {
     getRecipes,
     addRecipe,
     deleteRecipe,
+    updateRecipe,
 
 };
 

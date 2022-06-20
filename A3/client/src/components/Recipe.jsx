@@ -16,11 +16,12 @@ function Recipe(props) {
     <div>
       <li>
           name: {props.recipe.name}<br/>
-          <button className="detail-btn" onClick={() => {setPopup(true);}}>Detail</button>
+          <button className="detail-btn" onClick={() => {setPopup(true);}}>update</button>
           <button className="delOneButton" onClick={() => {dispatch(deleteRecipeAsync(props.recipe.id))}}>X</button>
           ingredients: {props.recipe.ingredients}<br/>
-          <Popup trigger={popup} setPopup={setPopup}>
-              steps: {props.recipe.steps}<br/>
+          steps: {props.recipe.steps}<br/>
+          <Popup trigger={popup} setPopup={setPopup} recipeId = {props.recipe.id}>
+            input for updateing recipe<br/>
           </Popup>
       </li>
     </div>
