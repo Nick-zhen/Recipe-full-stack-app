@@ -129,8 +129,9 @@ router.post('/', function (req, res, next) {
     return res.send(recipe);
 });
 ```
-<br>
-In summary, 
+In summary, the main page dispatch action when redered, the action call fetch REST APIs which I implemented in server side. Then the action will return result which is res.send(recipe) to reducer. The reducer will change the state in store in redux.<br>
+Note: The response body of such a request should be the result of that operation - the entities that have been successfully created. To return the whole list is simply not standard. Imagine you have thousands of recipes. If you POST one recipe, do you want to get the whole list back? This requires extra memory resources and potentially computational resources to handle in your server. If you can't return the whole list because the response body would be bigger than what you can handle (ex AWS ELB has a 1MB response size limit), how do you decide what to return?
+Now client side, computations within the app aren't as expensive. The code is all there and manipulating what you have probably isn't too difficult. But making an API call can be expensive. What if your app is primarily used on mobile? Will your users be happy if you're eating all their mobile data making a bunch of API requests? Probably not. It'll probably also take longer to return a whole list with your API call than returning just the new entities.
 <br>
 node.js <br>
 <img width="813" alt="image" src="https://user-images.githubusercontent.com/62523802/173720216-7b81ae76-9a23-4d4b-b163-1337cf2418ae.png"><br>
