@@ -5,10 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
-import rootReducer from './reducers/index';
+import recipesReducer from './redux/recipes/reducers'
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    recipes: recipesReducer
+  },
+  devTools: true
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

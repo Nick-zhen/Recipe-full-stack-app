@@ -1,8 +1,7 @@
 import InputText from "./InputText";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { add } from "../actions/index.js";
-import { v4 as uuidv4 } from 'uuid';
+import { addRecipeAsync } from "../redux/recipes/thunks";
 
 export default function InputForm() {
 
@@ -23,13 +22,14 @@ export default function InputForm() {
         if (title === "" || ingredient === "" || instruction === "") {
             alert("plz input TEXT!");
         } else {
-            dispatch(add({
+            const recipe = {
                 name: title,
                 ingredients: ingredient,
-                steps: instruction,
-                id: uuidv4()
-            }));
-            alert("The recipe was submitted");
+                steps: instruction
+            }
+            console.log(recipe);
+            dispatch(addRecipeAsync(recipe));
+            // alert("The recipe was submitted");
             clearText();
         }
     }
