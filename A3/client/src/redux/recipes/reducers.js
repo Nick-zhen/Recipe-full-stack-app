@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
-import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync, getIdListAsync } from './thunks';
+import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync, 
+    getIdListAsync, sortRecipeByNameAsync } from './thunks';
 
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
     addRecipe: REQUEST_STATE.IDLE,
     deleteRecipe: REQUEST_STATE.IDLE,
     updateRecipe: REQUEST_STATE.IDLE,
+    sortRecipe: REQUEST_STATE.IDLE,
     error: null
 };
 
@@ -79,6 +81,19 @@ const recipesSlice = createSlice({
             })
             .addCase(getIdListAsync.rejected, (state, action) => {
                 state.getRecipes = REQUEST_STATE.REJECTED;
+                state.error = action.error;
+            })
+            // sort recipes by alphbet
+            .addCase(sortRecipeByNameAsync.pending, (state) => {
+                state.sortRecipe = REQUEST_STATE.PENDING;
+                state.error = null;
+            })
+            .addCase(sortRecipeByNameAsync.fulfilled, (state, action) => {
+                state.sortRecipe = REQUEST_STATE.FULFILLED;
+                state.recipeList = action.payload;
+            })
+            .addCase(sortRecipeByNameAsync.rejected, (state, action) => {
+                state.sortRecipe = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
     }

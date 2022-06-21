@@ -58,6 +58,7 @@ router.put('/:recipeId', function (req, res, next) {
     recipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : recipe.ingredients;
     recipe.steps = updRecipe.steps ? updRecipe.steps : recipe.steps;
     // res.json({msg: 'Recipe updated', recipe});
+    console.log(recipe);
     return res.send(recipe);
 });
 
@@ -76,6 +77,16 @@ router.delete('/:recipeId', function (req, res, next) {
 
 router.get('/id/list', function (req, res, next) {
     return res.send(JSON.stringify(idList));
+});
+function compareStr(a, b) {
+    return (a < b) ? -1 : (a > b) ? 1 : 0;
+}
+router.get('/name/sort', function (req, res, next) {
+    recipeList.sort((a, b) => {
+        return compareStr(a.name, b.name);
+    });
+    console.log(recipeList);
+    return res.send(recipeList);
 });
 
 module.exports = router;

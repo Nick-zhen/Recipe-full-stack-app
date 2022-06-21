@@ -38,3 +38,10 @@ export const getIdListAsync = createAsyncThunk(
         return await RecipeService.getIdList();
     }
 );
+
+export const sortRecipeByNameAsync = createAsyncThunk(
+    actionTypes.SORT_RECIPES_BY_NAME,
+    async () => {
+        return await RecipeService.sortRecipesByName();
+    }
+)

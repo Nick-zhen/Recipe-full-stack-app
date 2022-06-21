@@ -68,12 +68,20 @@ const getIdList = async () => {
     return response.json();
 };
 
+const sortRecipesByName = async () => {
+    const response = await fetch('http://localhost:3001/recipes/name/sort', {
+        method: 'GET'
+    });
+    return response.json();
+}
+
 const RecipeService = {
     getRecipes,
     addRecipe,
     deleteRecipe,
     updateRecipe,
     getIdList,
+    sortRecipesByName,
 };
 
 export default RecipeService;

@@ -65,7 +65,7 @@ textarea {
   display: inline-block;
   border-radius: 3rem;
   width: 80px;
-  position: relative;
+  position: static;
   transition-duration: 0.4s;
   cursor: pointer;
 }
@@ -74,6 +74,8 @@ textarea {
   background-color: white; 
   color: black; 
   border: 2px solid #008CBA;
+  /* solve the Pop up bug change the position */
+  position: static;
 }
 
 .button_stuff:hover {
