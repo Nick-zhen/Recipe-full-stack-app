@@ -51,6 +51,7 @@ router.post('/', function (req, res, next) {
 // update recipe
 router.put('/:recipeId', function (req, res, next) {
     const recipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
+    // return 404 if not found
     if (!recipe) return res.status(404).send({ message: 'Recipe not found for update' });
 
     const updRecipe = req.body;
