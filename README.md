@@ -144,3 +144,7 @@ node.js <br>
 - [ ] [redux and express](https://medium.com/walmartglobaltech/creating-react-redux-express-full-stack-application-part-i-82959d847802)<br>
 - [ ] [redux, middleware and thunks](https://www.youtube.com/watch?v=qA6oyQQTJ3I)<br>
 - [ ] [redux toolkit(used this in asm)](https://redux-toolkit.js.org/api/createAsyncThunk)<br>
+
+
+## Assignemnt 4 (mongo DB)
+- [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
