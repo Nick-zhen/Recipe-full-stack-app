@@ -149,6 +149,7 @@ node.js <br>
 ## Assignemnt 4 (mongo DB)
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
-- [ ] [mongodb crash course](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
-- [ ] [mongodb in 30 min](https://www.youtube.com/watch?v=pWbMrx5rVBE)<br>
+- [ ] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
+- [ ] [mongodb tutorial for windows](https://www.youtube.com/watch?v=pWbMrx5rVBE)<br>
+- [ ] [MERN App developemnt](https://www.youtube.com/watch?v=-0exw-9YJBo)<br>
 
