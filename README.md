@@ -150,15 +150,15 @@ node.js <br>
 some important mongoshell:
 show databases
 ```shell
-Atlas atlas-f7siiy-shard-0 [primary] recipeApp> show dbs
+[primary] recipeApp> show dbs
 recipeApp   56.00 KiB
 admin      372.00 KiB
 local        1.24 GiB
 ```
 
-find or show collections
+find or show documents
 ```shell
-Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.find()
+[primary] recipeApp> db.recipes.find()
 [
   {
     _id: ObjectId("62bcc59bc5f03b095d2fca41"),
@@ -176,10 +176,18 @@ Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.find()
   }
 ]
 ```
-
-update
+insert or create a document
 ```shell
-Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.update({id: "1"}, 
+[primary] recipeApp> db.recipes.insert({name: "demo"})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("62bceed9c5f03b095d2fca44") }
+}
+```
+
+update documents using $set
+```shell
+[primary] recipeApp> db.recipes.update({id: "1"}, 
 ...     {
 .....         $set: {
 .......             like: 0,
@@ -195,13 +203,33 @@ Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.update({id: "1"},
   upsertedCount: 0
 }
 ```
-
-```js
-
+update documents using i$nc
+```shell
+[primary] recipeApp> db.recipes.update({id: "0"}, { $inc: {like: 2}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+```
+update all fields using $rename
+```shell
+[primary] recipeApp> db.recipes.updateMany({},{ $rename: {like: 'likes'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
 ```
 
-```js
-
+delete or remove documents
+```shell
+[primary] recipeApp> db.recipes.remove({name: "demo"})
+{ acknowledged: true, deletedCount: 1 }
 ```
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
