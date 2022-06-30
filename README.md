@@ -147,6 +147,62 @@ node.js <br>
 
 
 ## Assignemnt 4 (mongo DB)
+some important mongoshell:
+show databases
+```shell
+Atlas atlas-f7siiy-shard-0 [primary] recipeApp> show dbs
+recipeApp   56.00 KiB
+admin      372.00 KiB
+local        1.24 GiB
+```
+
+find or show collections
+```shell
+Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.find()
+[
+  {
+    _id: ObjectId("62bcc59bc5f03b095d2fca41"),
+    id: '0',
+    name: 'sushi',
+    ingredients: 'meat, rice, shrimp',
+    steps: 'take rice, stack the meat, stack the shrimp'
+  },
+  {
+    _id: ObjectId("62bcc59bc5f03b095d2fca42"),
+    id: '1',
+    name: 'steak',
+    ingredients: 'beef',
+    steps: 'stack the meat'
+  }
+]
+```
+
+update
+```shell
+Atlas atlas-f7siiy-shard-0 [primary] recipeApp> db.recipes.update({id: "1"}, 
+...     {
+.....         $set: {
+.......             like: 0,
+.......             date: Date()
+.......         }
+.....     }
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+```
+
+```js
+
+```
+
+```js
+
+```
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
 - [ ] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
