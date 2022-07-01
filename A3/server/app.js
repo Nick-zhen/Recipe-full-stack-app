@@ -7,10 +7,13 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 const recipeRouter = require('./routes/recipes');
-
+const colors = require('colors');
 const app = express();
-// init middleware
 
+//initialize DB connection
+const connectDB = require('./config/db');
+connectDB();
+// init middleware
 app.use(cors());
 app.use(logger('dev'));
 // Body Parser Middleware
