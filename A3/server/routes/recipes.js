@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuid } = require('uuid');
 const asyncHandler = require('express-async-handler');
-
+const Recipe = require('../models/recipeModel');
+const mongoose = require('mongoose');
 const recipeList = [
     {
         id: "0",
@@ -21,15 +22,21 @@ const recipeList = [
 const idList = ["0", "1"];
 
 router.get('/', asyncHandler(async function (req, res, next) {
-    return res.send(recipeList);
+    const recipeList = await Recipe.find();
+    return res.status(200).send(recipeList);
 }));
 
 router.get('/:recipeId',asyncHandler(async function (req, res, next) {
-    const foundRecipe = recipeList.find(recipe => recipe.id === req.params.recipeId);
-    
-    if (!foundRecipe) return res.status(404).send({ message: 'User not found' });
-  
-    return res.json({msg: "get recipe", foundRecipe});
+    // const foundRecipe = recipeList.find(recipe => recipe.id === req.params.recipeId);
+    Recipe.findById(req.params.recipeId, (err, recipe) => {
+        if (err) {
+            // console.log(err);
+            return res.status(404).send({ message: 'recipe not found' });
+        } else {
+            console.log(recipe);
+            return res.json({msg: "get recipe", recipe});
+        }
+    });
 }));
 
 // create recipe
@@ -41,29 +48,44 @@ router.post('/',asyncHandler(async function (req, res, next) {
     } else if (!req.body.steps) {
         return res.status(400).send({ message: 'Recipe must have steps!' })
     }
-    const recipe = { id: uuid(), name: req.body.name, ingredients: req.body.ingredients, steps: req.body.steps };
-    recipeList.push(recipe);
-    idList.push(recipe.id);
-    console.log(idList);
+    const recipe = await Recipe.create({
+        name: req.body.name, 
+        ingredients: req.body.ingredients, 
+        steps: req.body.steps,
+        likes: 0,
+        date: Date.now(),
+    });
     console.log(req.body);
-    return res.send(recipe);
+    return res.status(200).send(recipe);
 }));
-
+// TODO
 // update recipe
 router.put('/:recipeId',asyncHandler(async function (req, res, next) {
-    const recipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
-    // return 404 if not found
-    if (!recipe) return res.status(404).send({ message: 'Recipe not found for update' });
+    /* 
+    we cannot call recipe = await Recipe.findById(, callback), it will cause "MongooseError: 
+    Query was already executed:" 
+    Mongoose throws a 'Query was already executed' error when a given query is executed twice.
+    */
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'recipe not found for update' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for update' });
+            // we can use update but update() doesn't return the updated recipe
+            const updRecipe = req.body;
+            foundRecipe.name = updRecipe.name ? updRecipe.name : foundRecipe.name; 
+            foundRecipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : foundRecipe.ingredients;
+            foundRecipe.steps = updRecipe.steps ? updRecipe.steps : foundRecipe.steps;
+            await foundRecipe.save();
 
-    const updRecipe = req.body;
-    recipe.name = updRecipe.name ? updRecipe.name : recipe.name; 
-    recipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : recipe.ingredients;
-    recipe.steps = updRecipe.steps ? updRecipe.steps : recipe.steps;
-    // res.json({msg: 'Recipe updated', recipe});
-    console.log(recipe);
-    return res.send(recipe);
+            console.log(foundRecipe);
+            return res.status(200).send(foundRecipe);
+        }
+    });
 }));
-
+// TODO
 //delete recipe
 router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
     const delRecipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
@@ -76,13 +98,14 @@ router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
     console.log(delRecipe);
     return res.send(delRecipe);
 }));
-
+// TODO
 router.get('/id/list',asyncHandler(async function (req, res, next) {
     return res.send(JSON.stringify(idList));
 }));
 function compareStr(a, b) {
     return (a < b) ? -1 : (a > b) ? 1 : 0;
 }
+// TODO
 router.get('/name/sort',asyncHandler(async function (req, res, next) {
     recipeList.sort((a, b) => {
         return compareStr(a.name, b.name);
