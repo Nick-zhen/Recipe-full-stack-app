@@ -2,8 +2,9 @@ const getRecipes = async () => {
     const response = await fetch('http://localhost:3001/recipes', {
         method: 'GET'
     });
-    // console.log(response.json());
-    return response.json();
+    const data = await response.json()
+    console.log(data);
+    return data;
 };
 
 const addRecipe = async (recipe) => {
@@ -42,8 +43,7 @@ const deleteRecipe = async (recipeId) => {
 };
 
 const updateRecipe = async (recipeAndId) => {
-    console.log(recipeAndId);
-    const response = await fetch('http://localhost:3001/recipes/' + recipeAndId.id, {
+    const response = await fetch('http://localhost:3001/recipes/' + recipeAndId._id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -57,12 +57,12 @@ const updateRecipe = async (recipeAndId) => {
         const errorMsg = data?.message;
         throw new Error(errorMsg)
     }
-    
+
     return data;
 }
 
-const getIdList = async () => {
-    const response = await fetch('http://localhost:3001/recipes/id/list', {
+const getDetails = async () => {
+    const response = await fetch('http://localhost:3001/recipes/details/list', {
         method: 'GET'
     });
     return response.json();
@@ -80,7 +80,7 @@ const RecipeService = {
     addRecipe,
     deleteRecipe,
     updateRecipe,
-    getIdList,
+    getDetails,
     sortRecipesByName,
 };
 

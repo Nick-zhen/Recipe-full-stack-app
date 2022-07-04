@@ -27,7 +27,7 @@ export default function InputForm() {
                 ingredients: ingredient,
                 steps: instruction
             }
-            console.log(recipe);
+            // console.log(recipe);
             dispatch(addRecipeAsync(recipe));
             // alert("The recipe was submitted");
             clearText();

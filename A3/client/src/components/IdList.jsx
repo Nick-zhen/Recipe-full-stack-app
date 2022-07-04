@@ -1,15 +1,17 @@
 import Popup from "./Popup";
-import { getIdListAsync } from "../redux/recipes/thunks";
+import { getDetailsListAsync } from "../redux/recipes/thunks";
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
+// it should be DetailsList()
 function IdList() {
-    const updIdList = useSelector(state => state.recipes.idList);
-    
+    const detailsList = useSelector(state => state.recipes.detailsList);
+    // console.log(detailsList);
     const [idPopup, setIdPopup] = useState(false);
     const dispatch = useDispatch();
     async function popUpIdList() {
-        dispatch(getIdListAsync());
+        dispatch(getDetailsListAsync());
+        
         setIdPopup(true);
     }
     return (
@@ -17,7 +19,7 @@ function IdList() {
             <button className="button button_stuff" style={{width: 200}} onClick={() => {popUpIdList();}}>show id list</button>
             <Popup trigger={idPopup} setPopup={setIdPopup}>
                 <ul>
-                    {updIdList.map((id) => <li key={id}>{id}</li>)}
+                    {detailsList.map((detail) => <li key={detail._id}>{detail.name}: {detail.likes} likes. Created on {detail.date}</li>)}
                 </ul>
             </Popup>
         </div>

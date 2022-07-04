@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
 import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync, 
-    getIdListAsync, sortRecipeByNameAsync } from './thunks';
+    getDetailsListAsync, sortRecipeByNameAsync } from './thunks';
 
 
 const INITIAL_STATE = {
-    idList: [],
+    detailsList: [],
     recipeList: [],
     getRecipes: REQUEST_STATE.IDLE,
+    getDetails: REQUEST_STATE.IDLE,
     addRecipe: REQUEST_STATE.IDLE,
     deleteRecipe: REQUEST_STATE.IDLE,
     updateRecipe: REQUEST_STATE.IDLE,
@@ -45,6 +46,7 @@ const recipesSlice = createSlice({
                 state.addRecipe = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
+            // delete
             .addCase(deleteRecipeAsync.pending, (state) => {
                 state.deleteRecipe = REQUEST_STATE.PENDING;
                 state.error = null;
@@ -57,30 +59,36 @@ const recipesSlice = createSlice({
                 state.deleteRecipe = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
+            // update recipe
             .addCase(updateRecipeAsync.pending, (state) => {
                 state.updateRecipe = REQUEST_STATE.PENDING;
                 state.error = null;
             })
             .addCase(updateRecipeAsync.fulfilled, (state, action) => {
                 state.updateRecipe = REQUEST_STATE.FULFILLED;
-                state.recipeList.forEach(recipe => {
-                    if (recipe.id === action.payload.id) recipe = action.payload;
+                state.recipeList.forEach((recipe, index) => {
+                    if (recipe._id === action.payload._id) state.recipeList[index] = action.payload;
                 });
+                // console.log(state.recipeList);
+                // console.log(state.recipeList[0]);
+                // console.log(state.recipeList[1]);
+                // console.log(state.recipeList[2]);
             })
             .addCase(updateRecipeAsync.rejected, (state, action) => {
                 state.updateRecipe = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
-            .addCase(getIdListAsync.pending, (state) => {
-                state.getRecipes = REQUEST_STATE.PENDING;
+            // get details(id, name, like, date)
+            .addCase(getDetailsListAsync.pending, (state) => {
+                state.getDetails = REQUEST_STATE.PENDING;
                 state.error = null;
             })
-            .addCase(getIdListAsync.fulfilled, (state, action) => {
-                state.getRecipes = REQUEST_STATE.FULFILLED;
-                state.idList = action.payload;
+            .addCase(getDetailsListAsync.fulfilled, (state, action) => {
+                state.getDetails = REQUEST_STATE.FULFILLED;
+                state.detailsList = action.payload;
             })
-            .addCase(getIdListAsync.rejected, (state, action) => {
-                state.getRecipes = REQUEST_STATE.REJECTED;
+            .addCase(getDetailsListAsync.rejected, (state, action) => {
+                state.getDetails = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
             // sort recipes by alphbet

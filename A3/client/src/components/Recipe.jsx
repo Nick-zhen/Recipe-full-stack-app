@@ -1,5 +1,5 @@
+import { useDispatch } from "react-redux";
 import React, {useState} from 'react'
-import { useDispatch } from 'react-redux';
 import Popup from './Popup';
 import { getRecipesAsync, updateRecipeAsync, deleteRecipeAsync } from '../redux/recipes/thunks';
 import InputText from "./InputText";
@@ -25,23 +25,25 @@ function Recipe(props) {
 
   function updateRecipe() {
     const recipe = {
-        id: props.recipe.id,
+        _id: props.recipe._id,
         name: title,
         ingredients: ingredient,
         steps: instruction
     }
     dispatch(updateRecipeAsync(recipe));
-    // not sure if it is a good way to implement it?
-    dispatch(getRecipesAsync());
     clearText();
   }
+//   const recipeLists = useSelector(state => state.recipes.recipeList);
+//   console.log(recipeLists);
 
   return (
     <div>
       <li>
           name: {props.recipe.name}<br/>
           <button className="detail-btn" onClick={() => {setPopup(true);}}>update</button>
-          <button className="delOneButton" onClick={() => {dispatch(deleteRecipeAsync(props.recipe.id))}}>X</button>
+          <button className="delOneButton" onClick={() => {
+            dispatch(deleteRecipeAsync(props.recipe._id));
+          }}>X</button>
           ingredients: {props.recipe.ingredients}<br/>
           steps: {props.recipe.steps}<br/>
           <Popup trigger={popup} setPopup={setPopup}>

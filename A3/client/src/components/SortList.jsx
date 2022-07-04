@@ -19,7 +19,7 @@ export default function SortList() {
             <Popup trigger={sortPopup} setPopup={setSortPopup}>
                 <h3>sort recipes by name: </h3>
                 <ul>
-                    {sortedRecipes.map((recipe) => <li key={recipe.id}>{recipe.name}</li>)}
+                    {sortedRecipes.map((recipe) => <li key={recipe._id}>{recipe.name}</li>)}
                 </ul>
             </Popup>
         </div>

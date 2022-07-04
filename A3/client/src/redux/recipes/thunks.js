@@ -12,7 +12,7 @@ export const getRecipesAsync = createAsyncThunk(
 export const addRecipeAsync = createAsyncThunk(
     actionTypes.ADD_RECIPE,
     async (recipe) => {
-        console.log(recipe);
+        // console.log(recipe);
         return await RecipeService.addRecipe(recipe);
     }
 )
@@ -27,15 +27,17 @@ export const deleteRecipeAsync = createAsyncThunk(
 export const updateRecipeAsync = createAsyncThunk(
     actionTypes.UPDATE_RECIPE,
     async (recipeAndId) => {
-        console.log(recipeAndId);
-        return await RecipeService.updateRecipe(recipeAndId);
+        // console.log(recipeAndId);
+        const data = await RecipeService.updateRecipe(recipeAndId);
+        // console.log(data)
+        return data;
     }
 )
 
-export const getIdListAsync = createAsyncThunk(
-    actionTypes.GET_IDLIST,
+export const getDetailsListAsync = createAsyncThunk(
+    actionTypes.GET_DETAILS,
     async () => {
-        return await RecipeService.getIdList();
+        return await RecipeService.getDetails();
     }
 );
 
