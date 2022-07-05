@@ -1,16 +1,16 @@
 import Navbar from "./Navbar";
 import InputForm from "./InputForm";
 import RecipeLists from "./ReceipeLists";
-import SortList from "./SortList";
-import IdList from "./IdList";
+import FilterList from "./FilterList";
+import DetailsList from "./DetailsList";
 
 export default function RecipeBody() {
     return (
         <div>
             <Navbar />
             <InputForm />
-            <IdList />
-            <SortList />
+            <DetailsList />
+            <FilterList />
             <RecipeLists />
         </div>
     );

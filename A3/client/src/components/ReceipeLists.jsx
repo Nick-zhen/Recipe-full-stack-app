@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRecipesAsync } from "../redux/recipes/thunks";
 import Recipe from "./Recipe";
 import React from 'react'
-import SortList from "./SortList";
-import IdList from "./IdList";
+// import SortList from "./SortList";
+// import IdList from "./IdList";
 
 export default function RecipeLists(props) {
     // useSelector allows you to access the data in the Redux store
@@ -28,7 +28,7 @@ export default function RecipeLists(props) {
                         // Keys only make sense in the context of the surrounding array.
                         // extract a Recipe comonent, I should add key on the <Recipe /> elements in the array
                         // rather than on the <li> element in the Recipe itself.
-                        <Recipe recipe={recipe} key={recipe.id}/>
+                        <Recipe recipe={recipe} key={recipe._id}/>
                     ))}
                 </ul> 
                 

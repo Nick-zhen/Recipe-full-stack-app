@@ -4,6 +4,8 @@ export const actionTypes = {
     DELETE_RECIPE: 'recipes/deleteRecipe',
     UPDATE_RECIPE: 'recipes/updateRecipe',
     GET_IDLIST: 'recipes/getIdList',
-    SORT_RECIPES_BY_NAME: 'recipes/sortRecipesByName',
+    GET_DETAILS: 'recipes/getDetails',
+    FILTER_RECIPES_BY_LIKES: 'recipes/filterRecipesByLikes',
+    INC_LIKES: 'recipes/incLikes',
   };
   

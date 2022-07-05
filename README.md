@@ -147,8 +147,253 @@ node.js <br>
 
 
 ## Assignemnt 4 (mongo DB)
+some important mongoshell:
+show databases
+```shell
+[primary] recipeApp> show dbs
+recipeApp   56.00 KiB
+admin      372.00 KiB
+local        1.24 GiB
+```
+
+find or show documents
+```shell
+[primary] recipeApp> db.recipes.find()
+[
+  {
+    _id: ObjectId("62bcc59bc5f03b095d2fca41"),
+    id: '0',
+    name: 'sushi',
+    ingredients: 'meat, rice, shrimp',
+    steps: 'take rice, stack the meat, stack the shrimp'
+  },
+  {
+    _id: ObjectId("62bcc59bc5f03b095d2fca42"),
+    id: '1',
+    name: 'steak',
+    ingredients: 'beef',
+    steps: 'stack the meat'
+  }
+]
+```
+insert or create a document
+```shell
+[primary] recipeApp> db.recipes.insert({name: "demo"})
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId("62bceed9c5f03b095d2fca44") }
+}
+```
+
+update documents using $set
+```shell
+[primary] recipeApp> db.recipes.update({id: "1"}, 
+...     {
+.....         $set: {
+.......             like: 0,
+.......             date: Date()
+.......         }
+.....     }
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+```
+update documents using i$nc
+```shell
+[primary] recipeApp> db.recipes.update({id: "0"}, { $inc: {like: 2}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+```
+update all fields using $rename
+```shell
+[primary] recipeApp> db.recipes.updateMany({},{ $rename: {like: 'likes'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+```
+
+delete or remove documents
+```shell
+[primary] recipeApp> db.recipes.remove({name: "demo"})
+{ acknowledged: true, deletedCount: 1 }
+```
+After being familiar with MongoDB using shell. Let's see how we connect our server using mongoose!<br>
+First be sure you have MongoDB and Node.js installed.<br>
+next install Mongoose form the command line using npm<br>
+```shell
+$ nom install mongoose --save
+```
+1. In server side, create a config folder, create a file db.js for set up environment for connecting MongoDB using mongoose<br>
+```javascript
+const mongoose = require('mongoose');
+const connectDB = async () => {
+    try {
+        // the link inside connect() can be found in MongoDb connection with application
+        const conn = await mongoose.connect('mongodb+srv://recipe:recipe@recipecluster.dx8jp.mongodb.net/recipeApp?retryWrites=true&w=majority');
+
+        console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
+}
+module.exports = connectDB;
+```
+2. Create Recipe Model. creating recipeModel.js file in models folder. <br>
+With Mongoose, everything is derived from a Schema. So far we have got a recipeSchema with 5 property. The next step is compiling our schema into a Model.<br>
+A model is a class with which we construct documents.<br>
+```javascript
+const mongoose = require('mongoose');
+
+// create schema
+const recipeSchema = mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Please add a name value'],
+        },
+        ingredients: {
+            type: String,
+            required: [true, 'Please add a ingredients value'],
+        },
+        steps: {
+            type: String,
+            required: [true, 'Please add a steps value'],
+        },
+        likes: {
+            type: Number
+        },
+        date: {
+            type: Date
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
+
+// NOTE: methods must be added to the schema before compiling it with mongoose.model()
+recipeSchema.methods.speak = function speak() {
+    console.log(`I am a recipe named ${this.name}`);
+}
+
+// create model
+// The first argument is the singular name of the collection your model is for
+const Recipe = mongoose.model('Recipe', recipeSchema);
+
+module.exports = Recipe;
+```
+3. In router/recipes.js , we don't need the hard code intial state anymore because we use the data from database.<br>
+We will use some mongoose API to fetch, create, update or delete data just like we did in Mongo shell above.<br>
+```javascript
+const asyncHandler = require('express-async-handler');
+const Recipe = require('../models/recipeModel');
+```
+get one specific recipe using id
+```javascript
+router.get('/:recipeId',asyncHandler(async function (req, res, next) {
+    Recipe.findById(req.params.recipeId, (err, recipe) => {
+        if (err) {
+            // console.log(err);
+            return res.status(404).send({ message: 'recipe not found' });
+        } else {
+            console.log(recipe);
+            return res.json({msg: "get recipe", recipe});
+        }
+    });
+}));
+```
+create recipe
+```javascript
+router.post('/',asyncHandler(async function (req, res, next) {
+    if (!req.body.name) {
+        return res.status(400).send({ message: 'Recipe must have a name!' })
+    } else if (!req.body.ingredients) {
+        return res.status(400).send({ message: 'Recipe must have ingredients!' })
+    } else if (!req.body.steps) {
+        return res.status(400).send({ message: 'Recipe must have steps!' })
+    }
+    const recipe = await Recipe.create({
+        name: req.body.name, 
+        ingredients: req.body.ingredients, 
+        steps: req.body.steps,
+        likes: 0,
+        date: Date.now(),
+    });
+    console.log(req.body);
+    return res.status(200).send(recipe);
+}));
+```
+update recipe
+```javascript
+router.put('/:recipeId',asyncHandler(async function (req, res, next) {
+    /* 
+    we cannot call recipe = await Recipe.findById(, callback), it will cause "MongooseError: 
+    Query was already executed:" 
+    Mongoose throws a 'Query was already executed' error when a given query is executed twice.
+    */
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'recipe not found for update' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for update' });
+            // we can use update but update() doesn't return the updated recipe
+            const updRecipe = req.body;
+            foundRecipe.name = updRecipe.name ? updRecipe.name : foundRecipe.name; 
+            foundRecipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : foundRecipe.ingredients;
+            foundRecipe.steps = updRecipe.steps ? updRecipe.steps : foundRecipe.steps;
+            // put likes just for dubug
+            foundRecipe.likes = updRecipe.likes ? updRecipe.likes : foundRecipe.likes;
+            await foundRecipe.save();
+
+            console.log(foundRecipe);
+            return res.status(200).send(foundRecipe);
+        }
+    });
+}));
+```
+delete recipe
+```javascript
+router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'id incorrect for remove' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for remove' });
+            await foundRecipe.remove();
+
+            console.log(req.params.recipeId);
+            return res.status(200).json({_id: req.params.recipeId});
+        }
+    });
+}));
+```
+That is how we edit our server side for fetching data from database.<br>
+```javascript
+
+```
+
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
-- [ ] [mongodb crash course](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
-- [ ] [mongodb in 30 min](https://www.youtube.com/watch?v=pWbMrx5rVBE)<br>
+- [X] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
+- [ ] [mongodb tutorial for windows](https://www.youtube.com/watch?v=pWbMrx5rVBE)<br>
+- [ ] [MERN App developemnt](https://www.youtube.com/watch?v=-0exw-9YJBo)<br>
 

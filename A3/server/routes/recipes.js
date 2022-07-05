@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuid } = require('uuid');
-
+const asyncHandler = require('express-async-handler');
+const Recipe = require('../models/recipeModel');
 const recipeList = [
     {
         id: "0",
@@ -19,20 +20,26 @@ const recipeList = [
 
 const idList = ["0", "1"];
 
-router.get('/', function (req, res, next) {
-    return res.send(recipeList);
-});
+router.get('/', asyncHandler(async function (req, res, next) {
+    const recipeList = await Recipe.find();
+    return res.status(200).send(recipeList);
+}));
 
-router.get('/:recipeId', function (req, res, next) {
-    const foundRecipe = recipeList.find(recipe => recipe.id === req.params.recipeId);
-    
-    if (!foundRecipe) return res.status(404).send({ message: 'User not found' });
-  
-    return res.json({msg: "get recipe", foundRecipe});
-});
+router.get('/:recipeId',asyncHandler(async function (req, res, next) {
+    // const foundRecipe = recipeList.find(recipe => recipe.id === req.params.recipeId);
+    Recipe.findById(req.params.recipeId, (err, recipe) => {
+        if (err) {
+            // console.log(err);
+            return res.status(404).send({ message: 'recipe not found' });
+        } else {
+            console.log(recipe);
+            return res.json({msg: "get recipe", recipe});
+        }
+    });
+}));
 
 // create recipe
-router.post('/', function (req, res, next) {
+router.post('/',asyncHandler(async function (req, res, next) {
     if (!req.body.name) {
         return res.status(400).send({ message: 'Recipe must have a name!' })
     } else if (!req.body.ingredients) {
@@ -40,53 +47,111 @@ router.post('/', function (req, res, next) {
     } else if (!req.body.steps) {
         return res.status(400).send({ message: 'Recipe must have steps!' })
     }
-    const recipe = { id: uuid(), name: req.body.name, ingredients: req.body.ingredients, steps: req.body.steps };
-    recipeList.push(recipe);
-    idList.push(recipe.id);
-    console.log(idList);
+    const recipe = await Recipe.create({
+        name: req.body.name, 
+        ingredients: req.body.ingredients, 
+        steps: req.body.steps,
+        likes: 0,
+        date: Date.now(),
+    });
     console.log(req.body);
-    return res.send(recipe);
-});
+    return res.status(200).send(recipe);
+}));
 
 // update recipe
-router.put('/:recipeId', function (req, res, next) {
-    const recipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
-    if (!recipe) return res.status(404).send({ message: 'Recipe not found for update' });
+router.put('/:recipeId',asyncHandler(async function (req, res, next) {
+    /* 
+    we cannot call recipe = await Recipe.findById(, callback), it will cause "MongooseError: 
+    Query was already executed:" 
+    Mongoose throws a 'Query was already executed' error when a given query is executed twice.
+    */
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'recipe not found for update' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for update' });
+            // we can use update but update() doesn't return the updated recipe
+            const updRecipe = req.body;
+            foundRecipe.name = updRecipe.name ? updRecipe.name : foundRecipe.name; 
+            foundRecipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : foundRecipe.ingredients;
+            foundRecipe.steps = updRecipe.steps ? updRecipe.steps : foundRecipe.steps;
+            // put likes just for dubug
+            foundRecipe.likes = updRecipe.likes ? updRecipe.likes : foundRecipe.likes;
+            await foundRecipe.save();
 
-    const updRecipe = req.body;
-    recipe.name = updRecipe.name ? updRecipe.name : recipe.name; 
-    recipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : recipe.ingredients;
-    recipe.steps = updRecipe.steps ? updRecipe.steps : recipe.steps;
-    // res.json({msg: 'Recipe updated', recipe});
-    console.log(recipe);
-    return res.send(recipe);
-});
+            console.log(foundRecipe);
+            return res.status(200).send(foundRecipe);
+        }
+    });
+}));
 
 //delete recipe
-router.delete('/:recipeId', function (req, res, next) {
-    const delRecipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
-    if (!delRecipe) res.status(404).send("The id is not found to delete");
-    const idx = recipeList.indexOf(delRecipe);
-    recipeList.splice(idx, 1);
-    const idIdx = idList.indexOf(delRecipe.id);
-    idList.splice(idIdx, 1);
-    console.log(idList);
-    console.log(delRecipe);
-    return res.send(delRecipe);
-});
+router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'id incorrect for remove' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for remove' });
+            await foundRecipe.remove();
 
-router.get('/id/list', function (req, res, next) {
-    return res.send(JSON.stringify(idList));
-});
-function compareStr(a, b) {
-    return (a < b) ? -1 : (a > b) ? 1 : 0;
-}
-router.get('/name/sort', function (req, res, next) {
-    recipeList.sort((a, b) => {
-        return compareStr(a.name, b.name);
+            console.log(req.params.recipeId);
+            return res.status(200).json({_id: req.params.recipeId});
+        }
     });
-    console.log(recipeList);
-    return res.send(recipeList);
-});
+}));
+
+// increase like of a certain recipe
+router.put('/likes/inc/:recipeId', asyncHandler(async function (req, res, next) {
+    const recipe = Recipe.findById(req.params.recipeId, 'likes', async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'recipe not found for update' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for update' });
+            foundRecipe.likes++;
+            await foundRecipe.save();
+            console.log(foundRecipe);
+            return res.status(200).send(foundRecipe);
+        }
+    });
+}));
+
+// get recipe details(_id, name, like, date) stored in the same collection
+router.get('/details/list', asyncHandler(async function (req, res, next) {
+    const detailsList = await Recipe.find().select(['name', 'likes', 'date']);
+    console.log(detailsList);
+    return res.status(200).send(detailsList);
+    // return res.send(JSON.stringify(idList)); 
+}));
+
+// TODO (didn't finish)
+// get filtering data from the DB(likes > a number)
+router.get('/filter/byLikes/:operation/:num', asyncHandler(async function (req, res, next) {
+    if (req.params['operation'] === 'gt') {
+        const filterRecipes = await Recipe.find({likes: { $gt: req.params['num']}}, 'name likes');
+        if (filterRecipes.length === 0) return res.status(200).send({data:[], message: 'There is no filter found'}); 
+        console.log(filterRecipes);
+        return res.status(200).send({data: filterRecipes}); 
+    } else {
+        return res.json('There is no filter found'); 
+    }
+}));
+
+
+// function compareStr(a, b) {
+//     return (a < b) ? -1 : (a > b) ? 1 : 0;
+// }
+// router.get('/name/sort', asyncHandler(async function (req, res, next) {
+//     recipeList.sort((a, b) => {
+//         return compareStr(a.name, b.name);
+//     });
+//     console.log(recipeList);
+//     return res.send(recipeList);
+// }));
 
 module.exports = router;
