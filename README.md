@@ -390,7 +390,7 @@ That is how we edit our server side for fetching data from database.<br>
 ```javascript
 
 ```
-
+- [X] [Workshop4 slide](https://docs.google.com/presentation/d/1iuoems7Y_JpGok3FwqycI1hDBE97yLQr0DA7p6zor9g/edit#slide=id.p) <br>
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
 - [X] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
