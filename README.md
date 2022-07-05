@@ -231,13 +231,13 @@ delete or remove documents
 [primary] recipeApp> db.recipes.remove({name: "demo"})
 { acknowledged: true, deletedCount: 1 }
 ```
-After being familiar with MongoDB using shell. Let's see how we connect our server using mongoose!
-First be sure you have MongoDB and Node.js installed.
-next install Mongoose form the command line using npm
+After being familiar with MongoDB using shell. Let's see how we connect our server using mongoose!<br>
+First be sure you have MongoDB and Node.js installed.<br>
+next install Mongoose form the command line using npm<br>
 ```shell
 $ nom install mongoose --save
 ```
-1. In server side, create a config folder, create a file db.js for set up environment for connecting MongoDB using mongoose
+1. In server side, create a config folder, create a file db.js for set up environment for connecting MongoDB using mongoose<br>
 ```javascript
 const mongoose = require('mongoose');
 const connectDB = async () => {
@@ -253,9 +253,9 @@ const connectDB = async () => {
 }
 module.exports = connectDB;
 ```
-2. Create Recipe Model. creating recipeModel.js file in models folder. 
-With Mongoose, everything is derived from a Schema. So far we have got a recipeSchema with 5 property. The next step is compiling our schema into a Model. 
-A model is a class with which we construct documents.
+2. Create Recipe Model. creating recipeModel.js file in models folder. <br>
+With Mongoose, everything is derived from a Schema. So far we have got a recipeSchema with 5 property. The next step is compiling our schema into a Model.<br>
+A model is a class with which we construct documents.<br>
 ```javascript
 const mongoose = require('mongoose');
 
@@ -297,12 +297,13 @@ const Recipe = mongoose.model('Recipe', recipeSchema);
 
 module.exports = Recipe;
 ```
-3. In router/recipes.js , we don't need the hard code intial state anymore because we use the data from database.
-We will use some mongoose API to fetch, create, update or delete data just like we did in Mongo shell above.
+3. In router/recipes.js , we don't need the hard code intial state anymore because we use the data from database.<br>
+We will use some mongoose API to fetch, create, update or delete data just like we did in Mongo shell above.<br>
 ```javascript
 const asyncHandler = require('express-async-handler');
 const Recipe = require('../models/recipeModel');
 ```
+get one specific recipe using id
 ```javascript
 router.get('/:recipeId',asyncHandler(async function (req, res, next) {
     Recipe.findById(req.params.recipeId, (err, recipe) => {
@@ -316,8 +317,8 @@ router.get('/:recipeId',asyncHandler(async function (req, res, next) {
     });
 }));
 ```
+create recipe
 ```javascript
-// create recipe
 router.post('/',asyncHandler(async function (req, res, next) {
     if (!req.body.name) {
         return res.status(400).send({ message: 'Recipe must have a name!' })
@@ -337,8 +338,8 @@ router.post('/',asyncHandler(async function (req, res, next) {
     return res.status(200).send(recipe);
 }));
 ```
+update recipe
 ```javascript
-// update recipe
 router.put('/:recipeId',asyncHandler(async function (req, res, next) {
     /* 
     we cannot call recipe = await Recipe.findById(, callback), it will cause "MongooseError: 
@@ -367,8 +368,8 @@ router.put('/:recipeId',asyncHandler(async function (req, res, next) {
     });
 }));
 ```
+delete recipe
 ```javascript
-//delete recipe
 router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
     const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
         if (err) {
@@ -385,7 +386,7 @@ router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
     });
 }));
 ```
-That is how we edit our server side for fetching data from database.
+That is how we edit our server side for fetching data from database.<br>
 ```javascript
 
 ```
