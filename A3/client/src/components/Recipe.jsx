@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import React, {useState} from 'react'
 import Popup from './Popup';
-import { getRecipesAsync, updateRecipeAsync, deleteRecipeAsync } from '../redux/recipes/thunks';
+import { updateRecipeAsync, deleteRecipeAsync, incLikesAsync } from '../redux/recipes/thunks';
 import InputText from "./InputText";
 
 function Recipe(props) {
@@ -44,6 +44,9 @@ function Recipe(props) {
           <button className="delOneButton" onClick={() => {
             dispatch(deleteRecipeAsync(props.recipe._id));
           }}>X</button>
+          <button className="delOneButton" onClick={() => {
+            dispatch(incLikesAsync(props.recipe._id));
+          }}>like</button>
           ingredients: {props.recipe.ingredients}<br/>
           steps: {props.recipe.steps}<br/>
           <Popup trigger={popup} setPopup={setPopup}>

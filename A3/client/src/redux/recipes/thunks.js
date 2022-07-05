@@ -41,9 +41,16 @@ export const getDetailsListAsync = createAsyncThunk(
     }
 );
 
-export const sortRecipeByNameAsync = createAsyncThunk(
-    actionTypes.SORT_RECIPES_BY_NAME,
-    async () => {
-        return await RecipeService.sortRecipesByName();
+export const filterRecipeByLikesAsync = createAsyncThunk(
+    actionTypes.FILTER_RECIPES_BY_LIKES,
+    async (opAndNum) => {
+        return await RecipeService.filterRecipeByLikes(opAndNum);
+    }
+)
+
+export const incLikesAsync = createAsyncThunk(
+    actionTypes.INC_LIKES,
+    async (recipeId) => {
+        return await RecipeService.incLikes(recipeId);
     }
 )

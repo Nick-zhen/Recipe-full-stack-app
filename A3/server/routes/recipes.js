@@ -89,15 +89,6 @@ router.put('/:recipeId',asyncHandler(async function (req, res, next) {
 
 //delete recipe
 router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
-    // const delRecipe = recipeList.find((recipe) => recipe.id === req.params.recipeId);
-    // if (!delRecipe) res.status(404).send("The id is not found to delete");
-    // const idx = recipeList.indexOf(delRecipe);
-    // recipeList.splice(idx, 1);
-    // const idIdx = idList.indexOf(delRecipe.id);
-    // idList.splice(idIdx, 1);
-    // console.log(idList);
-    // console.log(delRecipe);
-    // return res.send(delRecipe);
     const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
         if (err) {
             // when the format of input _id is incorrect
@@ -108,7 +99,7 @@ router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
             await foundRecipe.remove();
 
             console.log(req.params.recipeId);
-            return res.status(200).json({id: req.params.recipeId});
+            return res.status(200).json({_id: req.params.recipeId});
         }
     });
 }));
@@ -143,9 +134,9 @@ router.get('/details/list', asyncHandler(async function (req, res, next) {
 router.get('/filter/byLikes/:operation/:num', asyncHandler(async function (req, res, next) {
     if (req.params['operation'] === 'gt') {
         const filterRecipes = await Recipe.find({likes: { $gt: req.params['num']}}, 'name likes');
-        if (filterRecipes.length === 0) return res.json('There is no filter found'); 
+        if (filterRecipes.length === 0) return res.status(200).send({data:[], message: 'There is no filter found'}); 
         console.log(filterRecipes);
-        return res.send(filterRecipes); 
+        return res.status(200).send({data: filterRecipes}); 
     } else {
         return res.json('There is no filter found'); 
     }

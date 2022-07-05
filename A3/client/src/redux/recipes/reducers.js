@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
 import { getRecipesAsync, addRecipeAsync, deleteRecipeAsync, updateRecipeAsync, 
-    getDetailsListAsync, sortRecipeByNameAsync } from './thunks';
+    getDetailsListAsync, filterRecipeByLikesAsync, incLikesAsync } from './thunks';
 
 
 const INITIAL_STATE = {
     detailsList: [],
     recipeList: [],
+    filterList: [],
     getRecipes: REQUEST_STATE.IDLE,
     getDetails: REQUEST_STATE.IDLE,
     addRecipe: REQUEST_STATE.IDLE,
     deleteRecipe: REQUEST_STATE.IDLE,
     updateRecipe: REQUEST_STATE.IDLE,
-    sortRecipe: REQUEST_STATE.IDLE,
+    filterRecipe: REQUEST_STATE.IDLE,
+    incLikes: REQUEST_STATE.IDLE,
     error: null
 };
 
@@ -53,7 +55,9 @@ const recipesSlice = createSlice({
             })
             .addCase(deleteRecipeAsync.fulfilled, (state, action) => {
                 state.deleteRecipe = REQUEST_STATE.FULFILLED;
-                state.recipeList = state.recipeList.filter((recipe) => recipe.id !== action.payload.id);
+                state.recipeList = state.recipeList.filter((recipe) => {
+                    return recipe._id !== action.payload._id
+                });
             })
             .addCase(deleteRecipeAsync.rejected, (state, action) => {
                 state.deleteRecipe = REQUEST_STATE.REJECTED;
@@ -69,10 +73,6 @@ const recipesSlice = createSlice({
                 state.recipeList.forEach((recipe, index) => {
                     if (recipe._id === action.payload._id) state.recipeList[index] = action.payload;
                 });
-                // console.log(state.recipeList);
-                // console.log(state.recipeList[0]);
-                // console.log(state.recipeList[1]);
-                // console.log(state.recipeList[2]);
             })
             .addCase(updateRecipeAsync.rejected, (state, action) => {
                 state.updateRecipe = REQUEST_STATE.REJECTED;
@@ -91,17 +91,34 @@ const recipesSlice = createSlice({
                 state.getDetails = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
-            // sort recipes by alphbet
-            .addCase(sortRecipeByNameAsync.pending, (state) => {
-                state.sortRecipe = REQUEST_STATE.PENDING;
+            // filter recipes by likes
+            .addCase(filterRecipeByLikesAsync.pending, (state) => {
+                state.filterRecipe = REQUEST_STATE.PENDING;
                 state.error = null;
             })
-            .addCase(sortRecipeByNameAsync.fulfilled, (state, action) => {
-                state.sortRecipe = REQUEST_STATE.FULFILLED;
-                state.recipeList = action.payload;
+            .addCase(filterRecipeByLikesAsync.fulfilled, (state, action) => {
+                state.filterRecipe = REQUEST_STATE.FULFILLED;
+                console.log(action.payload);
+                state.filterList = action.payload.data;
             })
-            .addCase(sortRecipeByNameAsync.rejected, (state, action) => {
-                state.sortRecipe = REQUEST_STATE.REJECTED;
+            .addCase(filterRecipeByLikesAsync.rejected, (state, action) => {
+                state.filterRecipe = REQUEST_STATE.REJECTED;
+                state.error = action.error;
+            })
+            // increase likes for one specific recipe
+            .addCase(incLikesAsync.pending, (state) => {
+                state.incLikes = REQUEST_STATE.PENDING;
+                state.error = null;
+            })
+            .addCase(incLikesAsync.fulfilled, (state, action) => {
+                state.incLikes = REQUEST_STATE.FULFILLED;
+                console.log(action.payload);
+                state.recipeList.forEach((recipe, index) => {
+                    if (recipe._id === action.payload._id) state.recipeList[index].likes = action.payload.likes;
+                });
+            })
+            .addCase(incLikesAsync.rejected, (state, action) => {
+                state.incLikes = REQUEST_STATE.REJECTED;
                 state.error = action.error;
             })
     }

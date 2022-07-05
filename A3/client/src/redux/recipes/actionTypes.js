@@ -5,6 +5,7 @@ export const actionTypes = {
     UPDATE_RECIPE: 'recipes/updateRecipe',
     GET_IDLIST: 'recipes/getIdList',
     GET_DETAILS: 'recipes/getDetails',
-    SORT_RECIPES_BY_NAME: 'recipes/sortRecipesByName',
+    FILTER_RECIPES_BY_LIKES: 'recipes/filterRecipesByLikes',
+    INC_LIKES: 'recipes/incLikes',
   };
   

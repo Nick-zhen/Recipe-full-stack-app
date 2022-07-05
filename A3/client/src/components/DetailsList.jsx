@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 // it should be DetailsList()
-function IdList() {
+function DetailsList() {
     const detailsList = useSelector(state => state.recipes.detailsList);
     // console.log(detailsList);
     const [idPopup, setIdPopup] = useState(false);
@@ -16,7 +16,7 @@ function IdList() {
     }
     return (
         <div>
-            <button className="button button_stuff" style={{width: 200}} onClick={() => {popUpIdList();}}>show id list</button>
+            <button className="button button_stuff" style={{width: 200}} onClick={() => {popUpIdList();}}>show details list</button>
             <Popup trigger={idPopup} setPopup={setIdPopup}>
                 <ul>
                     {detailsList.map((detail) => <li key={detail._id}>{detail.name}: {detail.likes} likes. Created on {detail.date}</li>)}
@@ -26,5 +26,5 @@ function IdList() {
     )
 }
 
-export default IdList
+export default DetailsList
 
