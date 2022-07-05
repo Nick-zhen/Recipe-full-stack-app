@@ -231,6 +231,165 @@ delete or remove documents
 [primary] recipeApp> db.recipes.remove({name: "demo"})
 { acknowledged: true, deletedCount: 1 }
 ```
+After being familiar with MongoDB using shell. Let's see how we connect our server using mongoose!
+First be sure you have MongoDB and Node.js installed.
+next install Mongoose form the command line using npm
+```shell
+$ nom install mongoose --save
+```
+1. In server side, create a config folder, create a file db.js for set up environment for connecting MongoDB using mongoose
+```javascript
+const mongoose = require('mongoose');
+const connectDB = async () => {
+    try {
+        // the link inside connect() can be found in MongoDb connection with application
+        const conn = await mongoose.connect('mongodb+srv://recipe:recipe@recipecluster.dx8jp.mongodb.net/recipeApp?retryWrites=true&w=majority');
+
+        console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
+    }
+}
+module.exports = connectDB;
+```
+2. Create Recipe Model. creating recipeModel.js file in models folder. 
+With Mongoose, everything is derived from a Schema. So far we have got a recipeSchema with 5 property. The next step is compiling our schema into a Model. 
+A model is a class with which we construct documents.
+```javascript
+const mongoose = require('mongoose');
+
+// create schema
+const recipeSchema = mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Please add a name value'],
+        },
+        ingredients: {
+            type: String,
+            required: [true, 'Please add a ingredients value'],
+        },
+        steps: {
+            type: String,
+            required: [true, 'Please add a steps value'],
+        },
+        likes: {
+            type: Number
+        },
+        date: {
+            type: Date
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
+
+// NOTE: methods must be added to the schema before compiling it with mongoose.model()
+recipeSchema.methods.speak = function speak() {
+    console.log(`I am a recipe named ${this.name}`);
+}
+
+// create model
+// The first argument is the singular name of the collection your model is for
+const Recipe = mongoose.model('Recipe', recipeSchema);
+
+module.exports = Recipe;
+```
+3. In router/recipes.js , we don't need the hard code intial state anymore because we use the data from database.
+We will use some mongoose API to fetch, create, update or delete data just like we did in Mongo shell above.
+```javascript
+const asyncHandler = require('express-async-handler');
+const Recipe = require('../models/recipeModel');
+```
+```javascript
+router.get('/:recipeId',asyncHandler(async function (req, res, next) {
+    Recipe.findById(req.params.recipeId, (err, recipe) => {
+        if (err) {
+            // console.log(err);
+            return res.status(404).send({ message: 'recipe not found' });
+        } else {
+            console.log(recipe);
+            return res.json({msg: "get recipe", recipe});
+        }
+    });
+}));
+```
+```javascript
+// create recipe
+router.post('/',asyncHandler(async function (req, res, next) {
+    if (!req.body.name) {
+        return res.status(400).send({ message: 'Recipe must have a name!' })
+    } else if (!req.body.ingredients) {
+        return res.status(400).send({ message: 'Recipe must have ingredients!' })
+    } else if (!req.body.steps) {
+        return res.status(400).send({ message: 'Recipe must have steps!' })
+    }
+    const recipe = await Recipe.create({
+        name: req.body.name, 
+        ingredients: req.body.ingredients, 
+        steps: req.body.steps,
+        likes: 0,
+        date: Date.now(),
+    });
+    console.log(req.body);
+    return res.status(200).send(recipe);
+}));
+```
+```javascript
+// update recipe
+router.put('/:recipeId',asyncHandler(async function (req, res, next) {
+    /* 
+    we cannot call recipe = await Recipe.findById(, callback), it will cause "MongooseError: 
+    Query was already executed:" 
+    Mongoose throws a 'Query was already executed' error when a given query is executed twice.
+    */
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'recipe not found for update' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for update' });
+            // we can use update but update() doesn't return the updated recipe
+            const updRecipe = req.body;
+            foundRecipe.name = updRecipe.name ? updRecipe.name : foundRecipe.name; 
+            foundRecipe.ingredients = updRecipe.ingredients ? updRecipe.ingredients : foundRecipe.ingredients;
+            foundRecipe.steps = updRecipe.steps ? updRecipe.steps : foundRecipe.steps;
+            // put likes just for dubug
+            foundRecipe.likes = updRecipe.likes ? updRecipe.likes : foundRecipe.likes;
+            await foundRecipe.save();
+
+            console.log(foundRecipe);
+            return res.status(200).send(foundRecipe);
+        }
+    });
+}));
+```
+```javascript
+//delete recipe
+router.delete('/:recipeId',asyncHandler(async function (req, res, next) {
+    const recipe = Recipe.findById(req.params.recipeId, async (err, foundRecipe) => {
+        if (err) {
+            // when the format of input _id is incorrect
+            return res.status(404).send({ message: 'id incorrect for remove' });
+        } else {
+            // if _id format is correct but not found, still return a null instead of an error
+            if (!foundRecipe) res.status(404).send({ message: 'recipe not found for remove' });
+            await foundRecipe.remove();
+
+            console.log(req.params.recipeId);
+            return res.status(200).json({_id: req.params.recipeId});
+        }
+    });
+}));
+```
+That is how we edit our server side for fetching data from database.
+```javascript
+
+```
+
 - [X] [mongo DB setup](https://docs.google.com/document/d/1HTjD5jqT3xeIEGqRyy7L38SRGOrjEOoEi_5tp_C5QKI/edit) <br>
 - [X] [mongo enviroment set up](https://blog.csdn.net/hzw29106/article/details/109277548)<br>
 - [X] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
