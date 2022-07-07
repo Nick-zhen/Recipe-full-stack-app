@@ -396,4 +396,5 @@ That is how we edit our server side for fetching data from database.<br>
 - [X] [mongodb tutorial for mac](https://www.youtube.com/watch?v=-56x56UppqQ)<br>
 - [ ] [mongodb tutorial for windows](https://www.youtube.com/watch?v=pWbMrx5rVBE)<br>
 - [ ] [MERN App developemnt](https://www.youtube.com/watch?v=-0exw-9YJBo)<br>
+- [ ] [web security](https://docs.google.com/presentation/d/17l2Rz_M3of6gOaEdThbB1eJ7RkSIloS3mSx1SWluc9o/edit#slide=id.g88b98a57f9_2_0)<br>
 
