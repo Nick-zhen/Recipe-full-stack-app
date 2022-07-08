@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuid } = require('uuid');
 const asyncHandler = require('express-async-handler');
 const Recipe = require('../models/recipeModel');
 const recipeList = [
@@ -26,7 +25,6 @@ router.get('/', asyncHandler(async function (req, res, next) {
 }));
 
 router.get('/:recipeId',asyncHandler(async function (req, res, next) {
-    // const foundRecipe = recipeList.find(recipe => recipe.id === req.params.recipeId);
     Recipe.findById(req.params.recipeId, (err, recipe) => {
         if (err) {
             // console.log(err);
