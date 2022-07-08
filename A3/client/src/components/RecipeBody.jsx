@@ -7,11 +7,13 @@ import DetailsList from "./DetailsList";
 export default function RecipeBody() {
     return (
         <div>
+            <div className="body-div">
             <Navbar />
             <InputForm />
             <DetailsList />
             <FilterList />
             <RecipeLists />
+            </div>
         </div>
     );
 }

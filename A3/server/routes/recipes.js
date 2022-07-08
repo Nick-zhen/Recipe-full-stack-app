@@ -2,6 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const Recipe = require('../models/recipeModel');
 const router = express.Router();
+const { protect } = require('../middleware/authMiddleware')
 const {
     getRecipes,
     createRecipe,
@@ -25,8 +26,8 @@ const recipeList = [
 
 const idList = ["0", "1"];
 
-router.route('/').get(getRecipes).post(createRecipe);
-router.route('/:recipeId').put(updRecipe).delete(deleteRecipe);
+router.route('/').get(protect, getRecipes).post(protect, createRecipe);
+router.route('/:recipeId').put(protect, updRecipe).delete(protect, deleteRecipe);
 
 router.get('/:recipeId',asyncHandler(async function (req, res, next) {
     Recipe.findById(req.params.recipeId, (err, recipe) => {

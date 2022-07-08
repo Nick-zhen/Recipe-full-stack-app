@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Recipe = require('../models/recipeModel');
 
 const getRecipes = asyncHandler(async function (req, res, next) {
-    const recipeList = await Recipe.find();
+    const recipeList = await Recipe.find({user: req.user._id});
     return res.status(200).send(recipeList);
 });
 
@@ -15,6 +15,7 @@ const createRecipe = asyncHandler(async function (req, res, next) {
         return res.status(400).send({ message: 'Recipe must have steps!' })
     }
     const recipe = await Recipe.create({
+        user: req.user.id,
         name: req.body.name, 
         ingredients: req.body.ingredients, 
         steps: req.body.steps,
