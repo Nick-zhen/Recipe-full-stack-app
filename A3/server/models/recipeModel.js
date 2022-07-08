@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 // create schema
 const recipeSchema = mongoose.Schema(
     {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
         name: {
             type: String,
             required: [true, 'Please add a name value'],
