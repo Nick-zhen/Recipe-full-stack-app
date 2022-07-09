@@ -6,10 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
 import recipesReducer from './redux/recipes/reducers'
-
+import authReducer from './redux/users/authSlice'
 const store = configureStore({
   reducer: {
-    recipes: recipesReducer
+    recipes: recipesReducer,
+    auth: authReducer,
   },
   devTools: true
 });
