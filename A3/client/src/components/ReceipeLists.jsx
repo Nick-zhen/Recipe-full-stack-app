@@ -2,19 +2,34 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecipesAsync } from "../redux/recipes/thunks";
 import Recipe from "./Recipe";
-import React from 'react'
-// import SortList from "./SortList";
-// import IdList from "./IdList";
+import { useNavigate } from 'react-router-dom'
+import { reset } from '../redux/users/authSlice'
 
 export default function RecipeLists(props) {
-    // useSelector allows you to access the data in the Redux store
-    const recipeLists = useSelector(state => state.recipes.recipeList);
-
+    const navigate = useNavigate()
     const dispatch = useDispatch();
 
+    // useSelector allows you to access the data in the Redux store
+    const recipeLists = useSelector(state => state.recipes.recipeList);
+    const { user } = useSelector((state) => state.auth)
+    
     useEffect(() => {
-        dispatch(getRecipesAsync());
-    }, [dispatch]);
+
+    if (!user) {
+      navigate('/login')
+    }
+
+    dispatch(getRecipesAsync());
+
+    return () => {
+      dispatch(reset())
+    }
+  }, [user, navigate, dispatch])
+
+
+    // useEffect(() => {
+    //     dispatch(getRecipesAsync());
+    // }, [dispatch]);
 
     // console.log(updIdList);
     // console.log(recipeLists);

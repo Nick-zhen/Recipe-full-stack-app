@@ -4,16 +4,18 @@ import RecipeService from './service';
 
 export const getRecipesAsync = createAsyncThunk(
     actionTypes.GET_RECIPES,
-    async () => {
-        return await RecipeService.getRecipes();
+    async (_,thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        return await RecipeService.getRecipes(token);
     }
 );
 
 export const addRecipeAsync = createAsyncThunk(
     actionTypes.ADD_RECIPE,
-    async (recipe) => {
+    async (recipe, thunkAPI) => {
         // console.log(recipe);
-        return await RecipeService.addRecipe(recipe);
+        const token = thunkAPI.getState().auth.user.token;
+        return await RecipeService.addRecipe(recipe, token);
     }
 )
 

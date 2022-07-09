@@ -1,17 +1,21 @@
-const getRecipes = async () => {
+const getRecipes = async (token) => {
     const response = await fetch('http://localhost:3001/recipes', {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
     const data = await response.json()
     console.log(data);
     return data;
 };
 
-const addRecipe = async (recipe) => {
+const addRecipe = async (recipe, token) => {
     console.log(recipe);
     const response = await fetch('http://localhost:3001/recipes', {
        method: 'POST',
        headers: {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
        },
        body: JSON.stringify(recipe) 

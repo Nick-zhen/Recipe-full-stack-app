@@ -27,7 +27,7 @@ const recipeList = [
 const idList = ["0", "1"];
 
 router.route('/').get(protect, getRecipes).post(protect, createRecipe);
-router.route('/:recipeId').put(protect, updRecipe).delete(protect, deleteRecipe);
+router.route('/:recipeId').put(updRecipe).delete(deleteRecipe);
 
 router.get('/:recipeId',asyncHandler(async function (req, res, next) {
     Recipe.findById(req.params.recipeId, (err, recipe) => {
