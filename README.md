@@ -235,7 +235,7 @@ After being familiar with MongoDB using shell. Let's see how we connect our serv
 First be sure you have MongoDB and Node.js installed.<br>
 next install Mongoose form the command line using npm<br>
 ```shell
-$ nom install mongoose --save
+$ npm install mongoose --save
 ```
 1. In server side, create a config folder, create a file db.js for set up environment for connecting MongoDB using mongoose<br>
 ```javascript
@@ -252,6 +252,13 @@ const connectDB = async () => {
     }
 }
 module.exports = connectDB;
+```
+In the app.js, we need to connect database 
+```javascript
+const colors = require('colors');
+//initialize DB connection
+const connectDB = require('./config/db');
+connectDB();
 ```
 2. Create Recipe Model. creating recipeModel.js file in models folder. <br>
 With Mongoose, everything is derived from a Schema. So far we have got a recipeSchema with 5 property. The next step is compiling our schema into a Model.<br>
