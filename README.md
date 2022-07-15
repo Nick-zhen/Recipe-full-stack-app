@@ -21,7 +21,7 @@ Resource:
 - [ ] [To do list for advanced project](https://www.youtube.com/watch?v=TZ933D_RB8E)
 
 ## Assignemnt 3
-Im this assignemnt, I used toolkit to create reducer instead of using tradiationl reducer.
+In this assignemnt, I used toolkit to create reducer instead of using tradiationl reducer.
 ```js
 import { createSlice } from '@reduxjs/toolkit';
 import { REQUEST_STATE } from "../utils";
@@ -405,3 +405,4 @@ That is how we edit our server side for fetching data from database.<br>
 - [ ] [MERN App developemnt](https://www.youtube.com/watch?v=-0exw-9YJBo)<br>
 - [ ] [web security](https://docs.google.com/presentation/d/17l2Rz_M3of6gOaEdThbB1eJ7RkSIloS3mSx1SWluc9o/edit#slide=id.g88b98a57f9_2_0)<br>
 
+## Assignment 5 - release engineering
