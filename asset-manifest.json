@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Recipe-full-stack-app/static/css/main.d1d442d7.css",
+    "main.js": "/Recipe-full-stack-app/static/js/main.18751ff0.js",
+    "static/js/787.9906b44e.chunk.js": "/Recipe-full-stack-app/static/js/787.9906b44e.chunk.js",
+    "static/media/background.jpeg": "/Recipe-full-stack-app/static/media/background.b3d272fea0b664cd7dd2.jpeg",
+    "index.html": "/Recipe-full-stack-app/index.html",
+    "main.d1d442d7.css.map": "/Recipe-full-stack-app/static/css/main.d1d442d7.css.map",
+    "main.18751ff0.js.map": "/Recipe-full-stack-app/static/js/main.18751ff0.js.map",
+    "787.9906b44e.chunk.js.map": "/Recipe-full-stack-app/static/js/787.9906b44e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d1d442d7.css",
+    "static/js/main.18751ff0.js"
+  ]
+}
