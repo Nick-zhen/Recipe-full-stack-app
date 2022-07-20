@@ -408,3 +408,6 @@ That is how we edit our server side for fetching data from database.<br>
 ## Assignment 5 - release engineering
 
 - [X] [Workshop 5 slide](https://docs.google.com/presentation/d/1HJIDGnrCZCN0gDLFjMYzNMC1e-AtIRXqnGtJqfb6cLc/edit#slide=id.g3e1a01b6bd_0_10)<br>
+- [X] [deploy server using heroku](https://www.youtube.com/watch?v=Z_D4w6HmT8k)<br>
+- [ ] [deploy with github actions](https://docs.github.com/en/actions/deployment/about-deployments/deploying-with-github-actions)<br>
+
