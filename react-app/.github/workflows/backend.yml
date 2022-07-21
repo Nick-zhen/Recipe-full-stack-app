@@ -1,49 +1,20 @@
-# name: Deploy to Heroku (Backend)
+name: Deploy to Heroku (Backend)
 
-# on:
-#   [push:
-#     branches:
-#       - main
-#     paths:
-#       - "server/**"
-#       - ".github/workflows/backend.yml",
-#   pull_request]
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Add backend remote origin
-#         run: git remote add heroku-backend https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/${{ secrets.HEROKU_BACKEND_APP_NAME }}.git
-#       - name: Deploy backend to Heroku
-#         run: git push heroku-backend `git subtree split --prefix server master`:refs/heads/master --force
-name: continuous integration
-
-on: [push, pull_request]
+on:
+  [push:
+    branches:
+      - main
+    paths:
+      - "server/**"
+      - ".github/workflows/backend.yml",
+  pull_request]
 
 jobs:
-  verify_colours:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./
     steps:
       - uses: actions/checkout@v2
-      - name: Check colours for for "grey"
-        run: |
-          if grep -q grey colours.txt; then
-            echo "Grey is a shade, not a colour."
-            exit 1
-          fi
-      - name: Check colours for for "white"
-        run: |
-          if grep -q white colours.txt; then
-            echo "White is a shade, not a colour."
-            exit 1
-          fi
-      - name: Check colours for for "black"
-        run: |
-          if grep -q black colours.txt; then
-            echo "Black is a shade, not a colour."
-            exit 1
-          fi
+      - name: Add backend remote origin
+        run: git remote add heroku-backend https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/${{ secrets.HEROKU_BACKEND_APP_NAME }}.git
+      - name: Deploy backend to Heroku
+        run: git push heroku-backend `git subtree split --prefix server master`:refs/heads/master --force
