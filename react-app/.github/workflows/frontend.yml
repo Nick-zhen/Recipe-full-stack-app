@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - assignment_5
     paths:
       - "client/**"
       - ".github/workflows/frontend.yml"
