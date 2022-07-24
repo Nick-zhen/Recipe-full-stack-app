@@ -406,6 +406,7 @@ That is how we edit our server side for fetching data from database.<br>
 - [ ] [web security](https://docs.google.com/presentation/d/17l2Rz_M3of6gOaEdThbB1eJ7RkSIloS3mSx1SWluc9o/edit#slide=id.g88b98a57f9_2_0)<br>
 
 ## Assignment 5 - release engineering
+<p> Because it is complex to deploy frontend and backend in monoropo, I separated them as 2 repo. The frontend repo is here https://github.com/Nick-zhen/RecipeApp-Frontend </p>  
 
 - [X] [Workshop 5 slide](https://docs.google.com/presentation/d/1HJIDGnrCZCN0gDLFjMYzNMC1e-AtIRXqnGtJqfb6cLc/edit#slide=id.g3e1a01b6bd_0_10)<br>
 - [X] [deploy server using heroku](https://www.youtube.com/watch?v=Z_D4w6HmT8k)<br>
