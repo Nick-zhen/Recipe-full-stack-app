@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "main", "assignment_5" ]
     paths:
-      - 'react-app/server/'
+      - 'react-app/server/**'
   pull_request:
     branches: [ "main", "assignment_5" ]
     paths:
-      - 'react-app/server/'
+      - 'react-app/server/**'
 
 jobs:
   build:
